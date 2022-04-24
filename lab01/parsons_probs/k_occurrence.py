@@ -9,10 +9,11 @@ def k_occurrence(k, num):
     >>> k_occurrence(0, 0)  # .Case 4
     0
     """
-    "*** YOUR CODE HERE ***"
-    count = 0
-    while(num!=0):
-        if num%10==k:
-            count+=1
-        num//=10
-    return count
+    occurrences = 0
+    while num:
+        if num % 10 == k:
+            occurrences += 1
+        num = num // 10
+    return occurrences
+
+
