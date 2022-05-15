@@ -393,6 +393,8 @@ def final_strategy(score, opponent_score):
     if 100-score<10:
         if score-opponent_score > 20:
             return 2
+        if 100-score < 3:
+            return 1
         return 4
     
     last_score=score+hefty_hogs(score,opponent_score)
@@ -403,9 +405,8 @@ def final_strategy(score, opponent_score):
         last_opp+=hog_pile(last_opp,last_score)
         # if hog_pile_strategy(last_score,last_opp,20)==0:
         #     return 0
-        return 6
-
-    return hog_pile_strategy(score,opponent_score,threshold=8,num_rolls=6)
+        return 5
+    return hog_pile_strategy(score,opponent_score,threshold=8,num_rolls=5)
     # END PROBLEM 12
 
 ##########################
