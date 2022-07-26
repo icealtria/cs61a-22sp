@@ -1,9 +1,12 @@
 """Typing test implementation"""
 
-from utils import lower, split, remove_punctuation, lines_from_file
+from glob import glob
+from unittest import result
+from weakref import ref
+from utils import count, lower, split, remove_punctuation, lines_from_file
 from ucb import main, interact, trace
 from datetime import datetime
-
+from operator import eq, ne, sub
 
 ###########
 # Phase 1 #
@@ -30,7 +33,10 @@ def pick(paragraphs, select, k):
     ''
     """
     # BEGIN PROBLEM 1
-    "*** YOUR CODE HERE ***"
+    picked = [x for x in paragraphs if select(x)]
+    if k<len(picked):
+        return picked[k]
+    return ''
     # END PROBLEM 1
 
 
@@ -49,10 +55,10 @@ def about(topic):
     """
     assert all([lower(x) == x for x in topic]), 'topics should be lowercase.'
     # BEGIN PROBLEM 2
-    "*** YOUR CODE HERE ***"
-    # END PROBLEM 2
-
-
+    def isabout(p:str):
+        return any([x for x in remove_punctuation(p).lower().split() if x in topic])
+    return isabout
+    # END PROBLEM 2(eq,typed_words,reference_words)
 def accuracy(typed, reference):
     """Return the accuracy (percentage of words typed correctly) of TYPED
     when compared to the prefix of REFERENCE that was typed.
@@ -79,7 +85,12 @@ def accuracy(typed, reference):
     typed_words = split(typed)
     reference_words = split(reference)
     # BEGIN PROBLEM 3
-    "*** YOUR CODE HERE ***"
+    if typed == '':
+        if reference == typed:
+            return 100.0
+        else:
+            return 0.0
+    return sum(map(eq,typed_words,reference_words)) / len(typed_words) * 100
     # END PROBLEM 3
 
 
@@ -97,7 +108,9 @@ def wpm(typed, elapsed):
     """
     assert elapsed > 0, 'Elapsed time must be positive'
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    if typed=='':
+        return 0.0
+    return len(typed)/5 * (60/elapsed)
     # END PROBLEM 4
 
 
@@ -124,7 +137,13 @@ def autocorrect(typed_word, word_list, diff_function, limit):
     'testing'
     """
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    if typed_word in word_list:
+        return typed_word
+    word_dict={w:diff_function(typed_word,w,limit) for w in word_list}
+    if min(word_dict.values())>limit:
+        return typed_word
+    else:
+        return min(word_dict,key=word_dict.get)
     # END PROBLEM 5
 
 
@@ -151,6 +170,14 @@ def feline_fixes(typed, reference, limit):
     5
     """
     # BEGIN PROBLEM 6
+    return max(len(reference),len(typed))-sum(map(eq,typed,reference))
+    # def helper(typed, reference):
+    #     if min(len(typed),len(reference))==0:
+    #         return 0
+    #     if typed[0] != reference[0]:
+    #         return 1 + helper(typed[1:], reference[1:])
+    #     return helper(typed[1:], reference[1:])
+    # return helper(typed, reference) + abs(len(typed)-len(reference))
     assert False, 'Remove this line'
     # END PROBLEM 6
 
@@ -174,7 +201,32 @@ def hidden_kittens(typed, reference, limit):
     True
     """
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+    count = 0
+    def helper(typ,ref):
+        if min(len(typ),len(ref)) == 0:
+            return 0
+        if len(ref) == 1 and typ[0]==ref[0]:
+            nonlocal count
+            count+=1
+        if typ[0]==ref[0]:
+            helper(typ[1:],ref[1:])
+        return helper(typ[1:],ref) 
+    helper(typed,reference)
+    if count == 0:
+        return limit+1
+    return count
+    # dp = [[0] * (len(typed) + 1) for _ in range(len(reference) + 1)]
+    # for col in range(len(dp[0])):
+    #         dp[0][col] = 1
+    # for x in range(1, len(typed) + 1):
+    #     for y in range(1, len(reference) + 1):
+    #         if typed[x - 1] == reference[y - 1]:
+    #             dp[y][x] = dp[y - 1][x - 1] + dp[y][x - 1]
+    #         else:
+    #             dp[y][x] = dp[y][x - 1]
+    # if dp[-1][-1] == 0:
+    #     return limit+1
+    # return dp[-1][-1]
     # END PROBLEM 7
 
 
@@ -216,7 +268,16 @@ def report_progress(typed, prompt, user_id, upload):
     0.2
     """
     # BEGIN PROBLEM 8
-    "*** YOUR CODE HERE ***"
+    ans = 0
+    for i in range(len(typed)):
+        if typed[i]==prompt[i]:
+            ans+=1
+        else:
+            break
+    progress={'id': user_id, 'progress': ans/len(prompt)}
+    upload(progress)
+
+    return progress['progress'] 
     # END PROBLEM 8
 
 
@@ -238,11 +299,11 @@ def time_per_word(words, times_per_player):
     [[6, 3, 6, 2], [10, 6, 1, 2]]
     """
     # BEGIN PROBLEM 9
-    "*** YOUR CODE HERE ***"
+    return {'words': words, 'times': [list(map(sub,x[1:],x[:])) for x in times_per_player]}
     # END PROBLEM 9
 
 
-def fastest_words(match):
+def fastest_words(match:dict):
     """Return a list of lists of which words each player typed fastest.
 
     Arguments:
@@ -260,7 +321,11 @@ def fastest_words(match):
     player_indices = range(len(match["times"]))  # contains an *index* for each player
     word_indices = range(len(match["words"]))    # contains an *index* for each word
     # BEGIN PROBLEM 10
-    "*** YOUR CODE HERE ***"
+    each_word_fastest_player = [min(player_indices,key=lambda x:time(match,x,i)) for i in word_indices]
+    result=[[] for _ in player_indices]
+    for index,x in enumerate(each_word_fastest_player):
+        result[x].append(get_word(match,index))
+    return result
     # END PROBLEM 10
 
 
@@ -284,13 +349,13 @@ def match(words, times):
     return {"words": words, "times": times}
 
 
-def get_word(match, word_index):
+def get_word(match:dict, word_index:int):
     """A utility function that gets the word with index word_index"""
     assert 0 <= word_index < len(match["words"]), "word_index out of range of words"
     return match["words"][word_index]
 
 
-def time(match, player_num, word_index):
+def time(match:dict, player_num:int, word_index:int):
     """A utility function for the time it took player_num to type the word at word_index"""
     assert word_index < len(match["words"]), "word_index out of range of words"
     assert player_num < len(match["times"]), "player_num out of range of players"
