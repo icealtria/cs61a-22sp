@@ -2,7 +2,4 @@ __pycache__/
 *.pyc
 test.py
 */.ok_*
-*/*.ok
-*/ok
 22sp
-*/tests/
