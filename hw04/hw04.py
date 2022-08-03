@@ -1,3 +1,6 @@
+from soupsieve import select
+
+
 HW_SOURCE_FILE = __file__
 
 
@@ -21,7 +24,13 @@ def merge(lst1, lst2):
     >>> merge([2, 3, 4], [2, 4, 6])
     [2, 2, 3, 4, 4, 6]
     """
-    "*** YOUR CODE HERE ***"
+    # return sorted(lst1+lst2)
+    if not lst1 or not lst2:
+        return lst1 + lst2
+    if lst1[0] < lst2[0]:
+        return [lst1[0]] + merge(lst1[1:],lst2)
+    else:
+        return [lst2[0]] + merge(lst1,lst2[1:])
 
 
 def remove_odd_indices(lst, odd):
@@ -48,8 +57,12 @@ def remove_odd_indices(lst, odd):
     ...       ['While', 'For'])
     True
     """
-    "*** YOUR CODE HERE ***"
-
+    if not lst:
+        return []
+    if odd:
+        return [lst[0]] + remove_odd_indices(lst[1:],not odd)
+    else:
+        return remove_odd_indices(lst[1:],not odd)
 
 class SmartFridge:
     """"
@@ -74,11 +87,19 @@ class SmartFridge:
         self.items = {}
 
     def add_item(self, item, quantity):
-        "*** YOUR CODE HERE ***"
+        if item in self.items:
+            self.items[item]+=quantity
+        else:
+            self.items[item]=quantity
+        return f'I now have {self.items[item]} {item}'
 
     def use_item(self, item, quantity):
-        "*** YOUR CODE HERE ***"
-
+        if self.items[item] > quantity:
+            self.items[item]-=quantity
+            return f'I have {self.items[item]} {item} left'
+        else:
+            self.items[item]=0
+            return f'Oh no, we need more {item}!'
 
 class VendingMachine:
     """A vending machine that vends some product for some price.
@@ -117,4 +138,34 @@ class VendingMachine:
     >>> w.vend()
     'Here is your soda.'
     """
-    "*** YOUR CODE HERE ***"
+
+    def __init__(self, product, price):
+        self.product = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0
+
+    def vend(self):
+        if not self.stock:
+            return 'Nothing left to vend. Please restock.'
+        diff = abs(self.price - self.balance)
+        if self.price > self.balance:
+            return f'Please update your balance with ${diff} more funds.'
+        else:
+            self.stock -= 1
+            self.balance = 0
+            msg=f'Here is your {self.product}'
+            if diff == 0:
+                return msg+'.'
+            else:
+                return f'{msg} and ${diff} change.'
+
+    def add_funds(self, num):
+        if not self.stock:
+            return f'Nothing left to vend. Please restock. Here is your ${num}.'
+        self.balance += num
+        return f'Current balance: ${self.balance}'
+
+    def restock(self, num):
+        self.stock += num
+        return f'Current {self.product} stock: {self.stock}'
