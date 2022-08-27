@@ -9,8 +9,7 @@ test = {
           >>> from car import *
           >>> deneros_car = Car('Tesla', 'Model S')
           >>> deneros_car.model
-          cc0e106b229dbf1be916fe923e79c15e
-          # locked
+          'Model S'
           >>> deneros_car.gas = 10
           >>> deneros_car.drive()
           e53294b18d1b589ae6f815549c72b530

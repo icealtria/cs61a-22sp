@@ -15,7 +15,7 @@ def lambda_curry2(func):
     """
     def lambda_curry2_helper(n):
         def lambda_curry2_helper2(m):
-            return func(n,m)
+            return func(n, m)
         return lambda_curry2_helper2
     return lambda_curry2_helper
 
@@ -59,12 +59,12 @@ def count_cond(condition):
     8
     """
     def count_cond_helper(n):
-        count=0
+        count = 0
         i = 1
-        while(i<=n):
-            if condition(n,i):
-                count+=1
-            i+=1
+        while(i <= n):
+            if condition(n, i):
+                count += 1
+            i += 1
         return count
     return count_cond_helper
 
@@ -101,9 +101,10 @@ def composite_identity(f, g):
     >>> b1(4)                            # (4 + 1)^2 != 4^2 + 1
     False
     """
-    f1,f2=composer(f,g),composer(g,f)
+    f1, f2 = composer(f, g), composer(g, f)
+
     def is_equal(n):
-        if f1(n)==f2(n):
+        if f1(n) == f2(n):
             return True
         else:
             return False
@@ -138,8 +139,8 @@ def cycle(f1, f2, f3):
     """
     def ret_fn(n):
         def ret(x):
-            i=0
-            while(i<n):
+            i = 0
+            while(i < n):
                 if i % 3 == 0:
                     x = f1(x)
                 elif i % 3 == 1:

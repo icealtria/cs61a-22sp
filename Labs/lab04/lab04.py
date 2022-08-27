@@ -19,11 +19,12 @@ def flatten(s):
     """
     result = []
     for x in s:
-        if type(x)==list:
+        if type(x) == list:
             result.extend(flatten(x))
         else:
             result.append(x)
     return result
+
 
 def insert_items(lst, entry, elem):
     """Inserts elem into lst after each occurrence of entry and then returns lst.
@@ -52,11 +53,11 @@ def insert_items(lst, entry, elem):
     True
     """
     index = 0
-    while index<len(lst):
-        if lst[index]==entry:
-            lst.insert(index+1,elem)
-            index+=1
-        index+=1
+    while index < len(lst):
+        if lst[index] == entry:
+            lst.insert(index+1, elem)
+            index += 1
+        index += 1
     return lst
 
 
@@ -89,25 +90,25 @@ class Minty:
         self.update()
 
     def create(self, type):
-        return Coin(self.year,type)
+        return Coin(self.year, type)
 
     def update(self):
-        self.year=Minty.present_year
+        self.year = Minty.present_year
 
 
 class Coin:
     cents = 50
 
     def __init__(self, year, type):
-        self.year=year
+        self.year = year
         match type:
             case 'Dime':
-                self.cents=10
+                self.cents = 10
             case 'Nickel':
-                self.cents=5
+                self.cents = 5
 
     def worth(self):
-        return self.cents+max(0,Minty.present_year-self.year-50)
+        return self.cents+max(0, Minty.present_year-self.year-50)
 
 
 def couple(s, t):
@@ -123,7 +124,8 @@ def couple(s, t):
     [['c', 's'], [6, '1']]
     """
     assert len(s) == len(t)
-    return [list(x) for x in zip(s,t)]
+    return [list(x) for x in zip(s, t)]
+
 
 def change_abstraction(change):
     """

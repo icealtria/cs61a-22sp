@@ -1,5 +1,6 @@
 from functools import reduce
 
+
 def store_digits(n):
     """Stores the digits of a positive number n in a linked list.
 
@@ -18,10 +19,9 @@ def store_digits(n):
     """
     link = Link.empty
     while n:
-        link = Link(n%10,link)
-        n//=10
+        link = Link(n % 10, link)
+        n //= 10
     return link
-    
 
 
 def every_other(s):
@@ -65,7 +65,8 @@ def cumulative_mul(t):
         return t.label
     for b in t.branches:
         cumulative_mul(b)
-    t.label = t.label * reduce(lambda x,y:x*y, [x.label for x in t.branches])
+    t.label = t.label * reduce(lambda x, y: x*y, [x.label for x in t.branches])
+
 
 def has_cycle(link):
     """Return whether link contains a cycle.

@@ -28,9 +28,6 @@ def scientific_name(name):
     return bool(re.search(r'^[A-Z](\. |[a-z])[a-z\s]+$', name))
 
 
-import re
-
-
 def calculator_ops(calc_str):
     """
     Returns True if an expression from the Calculator language that has two

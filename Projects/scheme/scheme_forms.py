@@ -128,6 +128,7 @@ def do_and_form(expressions, env):
     False
     """
     # BEGIN PROBLEM 12
+    value = True
     while expressions is not nil:
         if expressions.rest is not nil:
             value = scheme_eval(expressions.first, env)

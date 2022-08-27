@@ -28,9 +28,9 @@ def merge(lst1, lst2):
     if not lst1 or not lst2:
         return lst1 + lst2
     if lst1[0] < lst2[0]:
-        return [lst1[0]] + merge(lst1[1:],lst2)
+        return [lst1[0]] + merge(lst1[1:], lst2)
     else:
-        return [lst2[0]] + merge(lst1,lst2[1:])
+        return [lst2[0]] + merge(lst1, lst2[1:])
 
 
 def remove_odd_indices(lst, odd):
@@ -60,9 +60,10 @@ def remove_odd_indices(lst, odd):
     if not lst:
         return []
     if odd:
-        return [lst[0]] + remove_odd_indices(lst[1:],not odd)
+        return [lst[0]] + remove_odd_indices(lst[1:], not odd)
     else:
-        return remove_odd_indices(lst[1:],not odd)
+        return remove_odd_indices(lst[1:], not odd)
+
 
 class SmartFridge:
     """"
@@ -88,18 +89,19 @@ class SmartFridge:
 
     def add_item(self, item, quantity):
         if item in self.items:
-            self.items[item]+=quantity
+            self.items[item] += quantity
         else:
-            self.items[item]=quantity
+            self.items[item] = quantity
         return f'I now have {self.items[item]} {item}'
 
     def use_item(self, item, quantity):
         if self.items[item] > quantity:
-            self.items[item]-=quantity
+            self.items[item] -= quantity
             return f'I have {self.items[item]} {item} left'
         else:
-            self.items[item]=0
+            self.items[item] = 0
             return f'Oh no, we need more {item}!'
+
 
 class VendingMachine:
     """A vending machine that vends some product for some price.
@@ -154,7 +156,7 @@ class VendingMachine:
         else:
             self.stock -= 1
             self.balance = 0
-            msg=f'Here is your {self.product}'
+            msg = f'Here is your {self.product}'
             if diff == 0:
                 return msg+'.'
             else:

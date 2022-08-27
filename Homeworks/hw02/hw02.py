@@ -1,13 +1,17 @@
 from operator import add, mul
 import re
 
-square = lambda x: x * x
 
-identity = lambda x: x
+def square(x): return x * x
 
-triple = lambda x: 3 * x
 
-increment = lambda x: x + 1
+def identity(x): return x
+
+
+def triple(x): return 3 * x
+
+
+def increment(x): return x + 1
 
 
 HW_SOURCE_FILE = __file__
@@ -34,7 +38,7 @@ def product(n, term):
     """
     if n == 0:
         return 1
-    return term(n)*product(n-1,term)
+    return term(n)*product(n-1, term)
 
 
 def accumulate(merger, start, n, term):
@@ -62,8 +66,8 @@ def accumulate(merger, start, n, term):
     16
     """
     total = start
-    for i in range(1,n+1):
-        total= merger(total, term(i))
+    for i in range(1, n+1):
+        total = merger(total, term(i))
     return total
 
 
@@ -81,7 +85,7 @@ def summation_using_accumulate(n, term):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(summation_using_accumulate)).body[0].body]
     ['Expr', 'Return']
     """
-    return accumulate(add,0,n,term)
+    return accumulate(add, 0, n, term)
 
 
 def product_using_accumulate(n, term):
@@ -98,7 +102,7 @@ def product_using_accumulate(n, term):
     >>> [type(x).__name__ for x in ast.parse(inspect.getsource(product_using_accumulate)).body[0].body]
     ['Expr', 'Return']
     """
-    return accumulate(mul,0,n,term)
+    return accumulate(mul, 1, n, term)
 
 
 def filtered_accumulate(merger, start, cond, n, term):
@@ -126,10 +130,11 @@ def filtered_accumulate(merger, start, cond, n, term):
     """
     def merge_if(x, y):
         if cond(y):
-            return merger(x,y)
+            return merger(x, y)
         else:
             return x
     return accumulate(merge_if, start, n, term)
+
 
 def odd(x):
     return x % 2 == 1
@@ -163,12 +168,12 @@ def funception(func_a, start):
     """
     "*** YOUR CODE HERE ***"
     def func_b(n):
-        if start<0:
+        if start < 0:
             return None
         if start > n:
             return func_a(start)
-        total=1
-        for i in range(start,n):
-            total=total*func_a(i)
+        total = 1
+        for i in range(start, n):
+            total = total*func_a(i)
         return total
     return func_b

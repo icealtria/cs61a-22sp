@@ -55,9 +55,10 @@ class Account:
         balance = self.balance
         years = 0
         while balance < amount:
-            balance*=(1+self.interest)
-            years+=1
+            balance *= (1+self.interest)
+            years += 1
         return years
+
 
 class FreeChecking(Account):
     """A bank account that charges for withdrawals, but the first two are free!
@@ -86,8 +87,8 @@ class FreeChecking(Account):
     free_withdrawals = 2
 
     def withdraw(self, amount):
-        if self.free_withdrawals>0:
-            self.free_withdrawals-=1
+        if self.free_withdrawals > 0:
+            self.free_withdrawals -= 1
             return super().withdraw(amount)
         return super().withdraw(amount+self.withdraw_fee)
 
@@ -112,10 +113,11 @@ def ordered_digits(x):
 
     """
     while x >= 10:
-        if x%10<x//10%10:
+        if x % 10 < x//10 % 10:
             return False
-        x//=10
+        x //= 10
     return True
+
 
 def get_k_run_starter(n, k):
     """Returns the 0th digit of the kth increasing run within n.
@@ -138,10 +140,10 @@ def get_k_run_starter(n, k):
     """
     i = 0
     final = None
-    while i<=k:
-        while n>10 and n%10 > n//10%10:
-            n//=10
-        final = n%10
+    while i <= k:
+        while n > 10 and n % 10 > n//10 % 10:
+            n //= 10
+        final = n % 10
         i = i+1
         n = n//10
     return final
@@ -168,6 +170,7 @@ def make_repeater(func, n):
            ans = func(ans)
         return ans
     return inner_func
+
 
 def composer(func1, func2):
     """Return a function f, such that f(x) = func1(func2(x))."""
@@ -216,13 +219,13 @@ def add_chars(w1, w2):
     # print(w1,w2)
     if not w1:
         return w2
-    if w1[0]==w2[0]:
-        return add_chars(w1[1:],w2[1:])
+    if w1[0] == w2[0]:
+        return add_chars(w1[1:], w2[1:])
     else:
-        return w2[0] + add_chars(w1,w2[1:])
+        return w2[0] + add_chars(w1, w2[1:])
 
 
-def replace_all(d:dict, x, y):
+def replace_all(d: dict, x, y):
     """Replace all occurrences of x as a value (not a key) in d with y.
     >>> d = {3: '3', 'foo': 2, 'bar': 3, 'garply': 3, 'xyzzy': 99}
     >>> replace_all(d, 3, 'poof')
@@ -230,5 +233,5 @@ def replace_all(d:dict, x, y):
     True
     """
     for k in d:
-        if d[k]==x:
-            d[k]=y
+        if d[k] == x:
+            d[k] = y

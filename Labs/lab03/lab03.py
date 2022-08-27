@@ -27,6 +27,7 @@ def summation(n, term):
         return term(n)
     return term(n)+summation(n-1, term)
 
+
 def paths(m, n):
     """Return the number of paths from one corner of an
     M by N grid to the opposite corner.
@@ -87,12 +88,12 @@ def double_eights(n):
     >>> check(HW_SOURCE_FILE, 'double_eights', ['While', 'For'])
     True
     """
-    def helper(n,count):
-        if count==2:
+    def helper(n, count):
+        if count == 2:
             return True
-        if n==0:
+        if n == 0:
             return False
-        if n%10==8:
-            return helper(n//10,count+1)
-        return helper(n//10,0)
-    return helper(n,0)
+        if n % 10 == 8:
+            return helper(n//10, count+1)
+        return helper(n//10, 0)
+    return helper(n, 0)

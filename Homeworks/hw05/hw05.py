@@ -57,10 +57,11 @@ def add_d_leaves(t, v):
         10
     """
     def add_leaves(t, d):
-      for b in t.branches:
-        add_leaves(b, d+1)
-      t.branches.extend([Tree(v) for _ in range(d)])
+        for b in t.branches:
+            add_leaves(b, d+1)
+        t.branches.extend([Tree(v) for _ in range(d)])
     return add_leaves(t, 0)
+
 
 def has_path(t, target):
     """Return whether there is a path in a Tree where the entries along the path
@@ -94,11 +95,11 @@ def has_path(t, target):
     """
     assert len(target) > 0, 'no path for empty target.'
     if t.label == target[0]:
-      if len(target) == 1:
-        return True
-      return any([has_path(b, target[1:]) for b in t.branches])
+        if len(target) == 1:
+            return True
+        return any([has_path(b, target[1:]) for b in t.branches])
     else:
-      return False
+        return False
 
 
 def duplicate_link(lnk, val):
@@ -121,12 +122,12 @@ def duplicate_link(lnk, val):
     Link(1, Link(2, Link(2, Link(2, Link(2, Link(3))))))
     """
     if not lnk:
-      return
+        return
     if lnk.first == val:
-      lnk.rest = Link(val, lnk.rest)
-      duplicate_link(lnk.rest.rest, val)
+        lnk.rest = Link(val, lnk.rest)
+        duplicate_link(lnk.rest.rest, val)
     else:
-      duplicate_link(lnk.rest, val)
+        duplicate_link(lnk.rest, val)
 
 
 def deep_map(f, link):
@@ -143,11 +144,11 @@ def deep_map(f, link):
     <<2 <4 6> 8> <<10>>>
     """
     if link is Link.empty:
-      return Link.empty
+        return Link.empty
     if isinstance(link.first, Link):
-      first = deep_map(f, link.first)
+        first = deep_map(f, link.first)
     else:
-      first = f(link.first)
+        first = f(link.first)
     return Link(first, deep_map(f, link.rest))
 
 

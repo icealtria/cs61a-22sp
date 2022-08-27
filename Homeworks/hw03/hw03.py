@@ -25,11 +25,12 @@ def num_eights(pos):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr'])
     True
     """
-    if pos==0:
+    if pos == 0:
         return 0
-    if pos%10==8:
+    if pos % 10 == 8:
         return 1 + num_eights(pos//10)
     return num_eights(pos//10)
+
 
 def pingpong(n):
     """Return the nth element of the ping-pong sequence.
@@ -64,18 +65,19 @@ def pingpong(n):
     ...       ['Assign', 'AnnAssign', 'AugAssign', 'NamedExpr'])
     True
     """
-    def helper(index,num,dir):
-        if index==n:
+    def helper(index, num, dir):
+        if index == n:
             return num
         if dir == 1:
-            return helper(index+1,num+1,next_dir(index,dir))
+            return helper(index+1, num+1, next_dir(index, dir))
         if dir == 0:
-            return helper(index+1,num-1,next_dir(index,dir))
-    def next_dir(index,dir):
-        if num_eights(index+1)>0 or (index+1)%8==0:
+            return helper(index+1, num-1, next_dir(index, dir))
+
+    def next_dir(index, dir):
+        if num_eights(index+1) > 0 or (index+1) % 8 == 0:
             return 1-dir
         return dir
-    return helper(1,1,1)
+    return helper(1, 1, 1)
 
 
 def get_larger_coin(coin):
@@ -131,12 +133,12 @@ def count_coins(change):
     >>> check(HW_SOURCE_FILE, 'count_coins', ['While', 'For'])
     True
     """
-    def helper(change,coin):
+    def helper(change, coin):
         if change == 0:
             return 1
         if change < 0:
             return 0
         if coin == None:
             return 0
-        return helper(change,get_larger_coin(coin))+helper(change-coin,coin)
-    return helper(change,1)
+        return helper(change, get_larger_coin(coin))+helper(change-coin, coin)
+    return helper(change, 1)
